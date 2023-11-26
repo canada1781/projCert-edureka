@@ -66,7 +66,7 @@ pipeline {
                     def containerId
 
                     try {
-                        containerId = sh(script: "docker run -d -p 8080:80 my-docker-image:latest", returnStdout: true).trim()
+                        containerId = sh(script: "docker run -d -p 8080:80 my-php-website-image:latest", returnStdout: true).trim()
                         sh "echo 'Container is running with ID: ${containerId}'"
                     } catch (Exception e) {
                         echo "Deployment failed. Deleting the container..."
