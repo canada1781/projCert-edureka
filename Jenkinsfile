@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        docker run -p 8081:80 my-php-website-image
+                        docker run -p 8081:80 my-php-website-image -d
                     '''
                 }
             }
