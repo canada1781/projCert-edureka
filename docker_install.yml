@@ -1,0 +1,49 @@
+---
+- name: Install Docker
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Update apt package cache (for Ubuntu)
+      apt:
+        update_cache: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Install required system packages
+      package:
+        name: 
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - gnupg-agent
+          - software-properties-common
+      become: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Add Docker repository (for Ubuntu)
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+      when: ansible_os_family == 'Debian'
+
+    - name: Install Docker and Docker Compose
+      package:
+        name:
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+      become: yes
+      when: ansible_os_family == 'Debian'
+
+    - name: Start and enable Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+      become: yes
+      when: ansible_os_family == 'Debian'
